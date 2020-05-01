@@ -10,6 +10,7 @@ from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
 from email.utils import COMMASPACE, formatdate
 
+conf = json.loads("conf.json")
 
 class TempImage:
     def __init__(self, basePath="./", ext=".jpg"):
@@ -47,8 +48,8 @@ def send_email(conf):
                 msg.attach(part)
 
         # Credentials (if needed) : EDIT THIS
-        username = "gmail_username"
-        password = "password"
+        username = conf["username"]
+        password = conf["password"]
 
         # The actual mail send
         server = smtplib.SMTP('smtp.gmail.com:587')
@@ -58,9 +59,7 @@ def send_email(conf):
         server.quit()
 
 
-def send_mail(
-    conf, files=None,
-):
+def send_mail(conf, files=None,):
     assert isinstance(send_to, list)
 
     msg = MIMEMultipart()
