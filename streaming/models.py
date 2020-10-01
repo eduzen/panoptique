@@ -144,6 +144,7 @@ class VideoCamera:
 
                     self.show_image(True)
                     logger.warning("ALGO CAMBIOOOOO")
+
                     # update the last uploaded timestamp and reset the motion
                     # counter
                     self.lastUploaded = self.timestamp
