@@ -17,4 +17,7 @@ def index(request):
 @gzip.gzip_page
 def video(request):
     camera = VideoCamera()
-    return StreamingHttpResponse(camera.stream(), content_type="multipart/x-mixed-replace;boundary=frame")
+    return StreamingHttpResponse(
+        camera.stream(),
+        content_type="multipart/x-mixed-replace;boundary=frame",
+    )

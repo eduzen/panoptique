@@ -77,10 +77,14 @@ class VideoCamera:
         # threshold the delta image, dilate the thresholded image to fill
         # in holes, then find contours on thresholded image
         delta_thresh = 5
-        thresh = cv2.threshold(self.frameDelta, delta_thresh, 255, cv2.THRESH_BINARY)[1]
+        thresh = cv2.threshold(
+            self.frameDelta, delta_thresh, 255, cv2.THRESH_BINARY
+        )[1]
         thresh = cv2.dilate(thresh, None, iterations=2)
 
-        cnts = cv2.findContours(thresh.copy(), cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
+        cnts = cv2.findContours(
+            thresh.copy(), cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE
+        )
         cnts = self.grab_contours(cnts)
 
         min_area = 5000
@@ -129,7 +133,9 @@ class VideoCamera:
             # check to see if enough time has passed between uploads
             min_upload_seconds = 0.5
             min_motion_frames = 9
-            if (self.timestamp - self.lastUploaded).seconds >= min_upload_seconds:
+            if (
+                self.timestamp - self.lastUploaded
+            ).seconds >= min_upload_seconds:
                 logger.warning(self.motionCounter)
                 logger.warning(self.motionCounter)
 

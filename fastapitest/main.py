@@ -1,7 +1,7 @@
+import logging
 from typing import Optional
 
 import cv2
-import logging
 from fastapi import FastAPI
 from fastapi.responses import StreamingResponse
 
@@ -59,5 +59,8 @@ def read_item(item_id: int, q: Optional[str] = None):
 
 @app.get("/video")
 async def main():
-    stream = StreamingResponse(VideoCamera().stream(), media_type="multipart/x-mixed-replace;boundary=frame")
+    stream = StreamingResponse(
+        VideoCamera().stream(),
+        media_type="multipart/x-mixed-replace;boundary=frame",
+    )
     return stream

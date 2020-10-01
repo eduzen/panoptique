@@ -1,4 +1,5 @@
 from django.core.management.base import BaseCommand
+
 from streaming.models import VideoCamera
 
 
@@ -7,4 +8,6 @@ class Command(BaseCommand):
         v = VideoCamera()
         v.analize(show_img=True)
 
-        self.stdout.write(self.style.SUCCESS('Successfully closed poll "exit"'))
+        self.stdout.write(
+            self.style.SUCCESS('Successfully closed poll "exit"')
+        )
