@@ -1,6 +1,6 @@
 aiofiles
 aiosmtplib
-dropbox~=10.1.1
+dropbox
 fastapi
 #picamera
 flask
@@ -9,8 +9,6 @@ ipython
 isort
 jinja2
 numpy
-opencv-contrib-python~=4.2.0
-opencv-python~=3.4
 pre-commit
 pylint
 uvicorn

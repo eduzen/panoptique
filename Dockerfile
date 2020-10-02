@@ -1,4 +1,3 @@
-# FROM arm32v7/python:3.8
 FROM python:3.8
 
 ENV PYTHONUNBUFFERED 1
@@ -14,6 +13,7 @@ ENV PATH="$VIRTUAL_ENV/bin:$PATH"
 WORKDIR /code
 
 RUN apt-get update && apt-get install -y \
+    python3-opencv \
     libavcodec-dev \
     libavformat-dev \
     libswscale-dev \
