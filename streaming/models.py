@@ -1,21 +1,30 @@
 import datetime
 import logging
+import time
+from threading import Thread
 
 import cv2
+from django.conf import settings
 
 # Get an instance of a logger
 logger = logging.getLogger(__name__)
 
 
 class VideoCamera:
+    # thread = None
+
     def __init__(self):
-        self.video = cv2.VideoCapture(0)
+        # self. thread = None
+        self.video = cv2.VideoCapture(settings.CAMERA_DEVICE)
 
     def __del__(self):
         self.video.release()
 
     @property
     def frame(self):
+        # if not self.video.isOpened():
+        #    raise RuntimeError('Could not start camera.')
+
         _, image = self.video.read()
 
         if image is None:
@@ -77,14 +86,10 @@ class VideoCamera:
         # threshold the delta image, dilate the thresholded image to fill
         # in holes, then find contours on thresholded image
         delta_thresh = 5
-        thresh = cv2.threshold(
-            self.frameDelta, delta_thresh, 255, cv2.THRESH_BINARY
-        )[1]
+        thresh = cv2.threshold(self.frameDelta, delta_thresh, 255, cv2.THRESH_BINARY)[1]
         thresh = cv2.dilate(thresh, None, iterations=2)
 
-        cnts = cv2.findContours(
-            thresh.copy(), cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE
-        )
+        cnts = cv2.findContours(thresh.copy(), cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
         cnts = self.grab_contours(cnts)
 
         min_area = 5000
@@ -133,9 +138,7 @@ class VideoCamera:
             # check to see if enough time has passed between uploads
             min_upload_seconds = 0.5
             min_motion_frames = 9
-            if (
-                self.timestamp - self.lastUploaded
-            ).seconds >= min_upload_seconds:
+            if (self.timestamp - self.lastUploaded).seconds >= min_upload_seconds:
                 logger.warning(self.motionCounter)
                 logger.warning(self.motionCounter)
 
@@ -189,3 +192,48 @@ class VideoCamera:
             except Exception:
                 logger.exception("error")
                 break
+
+
+class VideoStreamWidget:
+    def __init__(self, src=0):
+        self.capture = cv2.VideoCapture(src)
+        # Start the thread to read frames from the video stream
+        self.thread = Thread(target=self.update, args=())
+        self.thread.daemon = True
+        self.thread.start()
+
+    def __del__(self):
+        self.capture.release()
+
+    def update(self):
+        # Read the next frame from the stream in a different thread
+        while True:
+            if self.capture.isOpened():
+                (self.status, self.frame) = self.capture.read()
+                _, self.jpeg = cv2.imencode(".jpg", self.frame)
+
+            time.sleep(0.01)
+
+    def show_frame(self):
+        # Display frames in main program
+        try:
+            value = self.jpeg.tobytes()
+        except:  # NOQA
+            value = b""
+        yield b"--frame\r\nContent-Type: image/jpeg\r\n\r\n%b\r\n\r\n" % value
+
+        # cv2.imshow('frame', self.frame)
+        # key = cv2.waitKey(1)
+        # if key == ord('q'):
+        #     self.capture.release()
+        #     cv2.destroyAllWindows()
+        #     exit(1)
+
+
+# if __name__ == '__main__':
+#     video_stream_widget = VideoStreamWidget()
+#     while True:
+#         try:
+#             video_stream_widget.show_frame()
+#         except AttributeError:
+#             pass

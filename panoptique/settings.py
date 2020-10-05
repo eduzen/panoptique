@@ -123,3 +123,5 @@ USE_TZ = True
 STATIC_URL = "/static/"
 STATIC_ROOT = "assets"
 STATICFILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage"
+
+CAMERA_DEVICE = 0
