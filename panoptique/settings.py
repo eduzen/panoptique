@@ -125,3 +125,5 @@ STATIC_ROOT = "assets"
 STATICFILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage"
 
 CAMERA_DEVICE = 0
+LOGIN_REDIRECT_URL = "/"
+LOGOUT_REDIRECT_URL = "/"
