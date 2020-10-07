@@ -3,7 +3,7 @@ from django.http import StreamingHttpResponse
 from django.shortcuts import render
 from django.views.decorators import gzip
 
-from .streaming import stream_camera
+from .streaming import RipCamera
 
 
 def index(request):
@@ -13,7 +13,8 @@ def index(request):
 @login_required
 @gzip.gzip_page
 def video(request):
+    camera = RipCamera()
     return StreamingHttpResponse(
-        stream_camera(),
+        camera.stream_camera(),
         content_type="multipart/x-mixed-replace;boundary=frame",
     )

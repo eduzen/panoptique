@@ -6,7 +6,7 @@ def threaded(func):
     @wraps(func)
     def wrapper(*args, **kwargs):
         with futures.ThreadPoolExecutor() as executor:
-            future = executor.submit(func)
+            future = executor.submit(func, *args, **kwargs)
         frame = future.result()
         return frame
 
