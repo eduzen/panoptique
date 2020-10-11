@@ -1,2 +1,2 @@
 start:
-	python app.py
+	./scripts/server.sh
