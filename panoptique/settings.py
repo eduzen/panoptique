@@ -128,7 +128,6 @@ CAMERA_DEVICE = 0
 LOGIN_REDIRECT_URL = "/"
 LOGOUT_REDIRECT_URL = "/"
 
-
 LOGGING = {
     "version": 1,
     "disable_existing_loggers": False,

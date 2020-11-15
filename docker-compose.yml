@@ -1,13 +1,14 @@
-version: '3'
+version: "3"
 
 services:
-
   panoptique:
     build: .
-    # command: python manage.py runserver 0.0.0.0:8000
-    command: poetry run python client.py
+    command: python manage.py runserver 0.0.0.0:8000
+    # command: poetry run python client.py
     volumes:
       - .:/code
+    devices:
+      - /dev/video0:/dev/video0
     ports:
       - "8000:8000"
 
@@ -20,7 +21,6 @@ services:
       - "5555"
     devices:
       - /dev/video0:/dev/video0
-
 
   client:
     build: ./zeromq/.

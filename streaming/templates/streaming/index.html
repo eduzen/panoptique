@@ -1,13 +1,30 @@
-{% extends "base.html" %}
-
-{% block content %}
+{% extends "base.html" %} {% block content %}
 <div class="container">
   {% if user.is_authenticated %}
-    <!-- Content here -->
-    <h3>Streaming from living room</h3>
-    <img src="/video" class="img-fluid" >
+  <!-- Content here -->
+  <div class="container">
+    <div class="row">
+      <div class="col-sm">
+        <i class="fa fa-plus zoom-in" aria-hidden="true"></i>
+      </div>
+      <div class="col-sm">
+        <i class="fa fa-refresh fa-2x fa-fw rotate"></i>
+      </div>
+      <div class="col-sm">
+        <i class="fa fa-minus zoom-out" aria-hidden="true"></i>
+      </div>
+      <div class="col-sm">
+        <button type="button" class="btn btn-success reset">reset</button>
+      </div>
+    </div>
+  </div>
+
+  <hr />
+  <div class="row">
+    <img id="panop" src="/video" class="img-fluid adaptive-rotate rotate" />
+  </div>
   {% else %}
-    <a href="{% url 'login' %}">Login</a>
+  <a href="{% url 'login' %}">Login</a>
   {% endif %}
 </div>
 {% endblock %}

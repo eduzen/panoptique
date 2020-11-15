@@ -1,12 +1,14 @@
 FROM python:3.8
 
-ENV PYTHONUNBUFFERED 1
-ENV PYTHONDONTWRITEBYTECODE=1
-ENV PYTHONUNBUFFERED=1
-ENV POETRY_VERSION=1.0.10
-RUN echo 'export PS1="\[\e[36m\]panshell>\[\e[m\] "' >> /root/.bashrc
+ENV PYTHONFAULTHANDLER=1 \
+    PYTHONUNBUFFERED=1 \
+    PYTHONHASHSEED=random \
+    PIP_NO_CACHE_DIR=off \
+    PIP_DISABLE_PIP_VERSION_CHECK=on \
+    PIP_DEFAULT_TIMEOUT=100 \
+    POETRY_VERSION=1.1.4
 
-WORKDIR /code
+RUN echo 'export PS1="\[\e[36m\]panshell>\[\e[m\] "' >> /root/.bashrc
 
 RUN apt-get update && apt-get install -y \
     python3-opencv \
@@ -18,8 +20,11 @@ RUN apt-get update && apt-get install -y \
 
 RUN pip install poetry==$POETRY_VERSION
 
-COPY pyproject.toml poetry.lock ./
+WORKDIR /code
 
-RUN poetry install
+COPY pyproject.toml poetry.lock /code/
 
-COPY . /code/
+RUN poetry config virtualenvs.create false \
+    && poetry install --no-interaction --no-ansi
+
+COPY . /code
