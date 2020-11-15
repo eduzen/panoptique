@@ -12,6 +12,6 @@ libv4l-dev \
 libxvidcore-dev \
 libx264-dev \
 libgtk-3-dev \
-libcanberra-gtk* \
+libcanberra-gtk\* \
 libatlas-base-dev \
 gfortran
