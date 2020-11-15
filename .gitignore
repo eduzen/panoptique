@@ -144,3 +144,4 @@ django.env
 assets/
 oak.code-workspace
 celerybeat.pid
+.vscode/

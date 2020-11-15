@@ -4,8 +4,29 @@ services:
 
   panoptique:
     build: .
-    command: python manage.py runserver 0.0.0.0:8000
+    # command: python manage.py runserver 0.0.0.0:8000
+    command: poetry run python client.py
     volumes:
       - .:/code
     ports:
       - "8000:8000"
+
+  zeromq:
+    build: ./zeromq/.
+    command: python /code/server.py
+    volumes:
+      - ./server.py:/code/server.py
+    expose:
+      - "5555"
+    devices:
+      - /dev/video0:/dev/video0
+
+
+  client:
+    build: ./zeromq/.
+    command: python /code/client.py
+    volumes:
+      - ./client.py:/code/client.py
+      - ./testing/:/code/testing/
+    devices:
+      - /dev/video0:/dev/video0
