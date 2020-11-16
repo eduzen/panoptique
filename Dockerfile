@@ -28,3 +28,5 @@ RUN poetry config virtualenvs.create false \
     && poetry install --no-interaction --no-ansi
 
 COPY . /code
+
+CMD ["gunicorn", "panoptique.wsgi", "--log-level", "debug", "--workers", "1", "--threads", "4", "-k", "gevent"]
