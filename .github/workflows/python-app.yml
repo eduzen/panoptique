@@ -32,7 +32,7 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-pip-
       - name: Run image
-        uses: abatilo/actions-poetry@v2.1.0
+        uses: abatilo/actions-poetry@v2.1.3
         with:
           poetry-version: ${{ matrix.poetry-version }}
 
